@@ -1,0 +1,16 @@
+{
+"manifest_version": 3,
+"name": "Useful Docker Tags",
+"version": "1.0.1",
+"description": "Add a tab on hub.docker.com to display useful tags (grouped by digest)",
+"icons": {
+    "48":  "images/icon48.png",
+    "128": "images/icon128.png"
+},
+"content_scripts": [
+    {
+        "matches": ["*://hub.docker.com/r/*","*://hub.docker.com/_/*"],
+        "js": ["useful_docker_tags.js"]
+    }
+]
+}
