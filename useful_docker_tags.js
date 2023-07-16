@@ -3,21 +3,24 @@ console.log("dockertags: Loaded dockertags ext")
 const FAVORITE_ARCH = "amd64"
 const lpath = (new URL(document.URL)).pathname.split("/");
 const official = lpath[1]=="_"
-const xpath_maindiv = official?"/html/body/div[1]/div/div[2]/div/div[3]":"/html/body/div[1]/div/div[2]/div/div/div[2]/div[2]"
-const xpath_tabs = official?"/html/body/div[1]/div/div[2]/div/div[2]/div/div/div[2]/div/div":"/html/body/div[1]/div/div[2]/div/div/div[2]/div[1]/div[2]/div/div/div";
+//const xpath_maindiv = official?"/html/body/div[1]/div/div[2]/div/div[3]":"/html/body/div[1]/div/div[2]/div/div/div[2]/div[2]"
+//const xpath_tabs = official?"/html/body/div[1]/div/div[2]/div/div[2]/div/div/div[2]/div/div":"/html/body/div[1]/div/div[2]/div/div/div[2]/div[1]/div[2]/div/div/div";
+const maindiv_selector = official?"div.MuiContainer-root:nth-child(3)":"#mainContainer > .MuiBox-root > .MuiBox-root > .MuiStack-root > .MuiContainer-root";
+const tabs_selector = ".MuiTabs-flexContainer"; 
 //const xpath_sidepanel= official?"/html/body/div[1]/div/div[2]/div/div[3]/div/div[2]":"/html/body/div[1]/div/div[2]/div/div/div[3]/div/div/div/div[2]";
 
-  let tabsdiv = null;
-  let maindiv = null;
+let tabsdiv = null;
+let maindiv = null;
 
-  // ============================ UTILS ====================================
-  async function wait_and_load_xpath(xpath){
-    // Find the target div on the page
-    let o = null;
-  while(o===null){
+// ============================ UTILS ====================================
+async function wait_and_load_selector(selector, timeout = 5000){
+  const endTime = Date.now() + timeout;
+  let o = document.querySelector(selector);
+  while(o === null && Date.now() <= endTime){
     await new Promise(resolve => setTimeout(resolve, 50));
-    o = document.evaluate(xpath,document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
+    o = document.querySelector(selector);
   }
+  if(o === null) throw new Error(`dockertags: Timeout waiting for selector: '${selector}'`);
   return o;
 }
 
@@ -68,7 +71,7 @@ function display_tags(tss, div){
     cell.innerHTML = ts.map(o=>o.name).sort().join("</br>");
     row.appendChild(cell);
     const t = ts[0];
-    row.appendChild(td(t.digest.substring(0,20), t.digest));
+    row.appendChild(td(t.digest.substring(0,20)+"...", t.digest));
     row.appendChild(td(t.last_updated.split("T")[0], t.last_updated));
     row.appendChild(td(Math.round(t.full_size/1024/1024)+" MB", t.full_size + " bytes"));
     table.appendChild(row);
@@ -92,7 +95,7 @@ async function load_pretty_tags(event){
     d[t.digest].push(t);
   }
   ts = Object.values(d);
-  maindiv ||= await wait_and_load_xpath(xpath_maindiv)
+  maindiv ||= await wait_and_load_selector(maindiv_selector);
   display_tags(ts, maindiv);
 }
 
@@ -110,4 +113,4 @@ async function add_tab(div){
   tabsdiv.appendChild(link);
 }
 
-wait_and_load_xpath(xpath_tabs).then(add_tab);
+wait_and_load_selector(tabs_selector).then(add_tab);
