@@ -1,4 +1,4 @@
-console.log("Loaded dockertags ext")
+console.log("dockertags: Loaded dockertags ext")
 
 const FAVORITE_ARCH = "amd64"
 const lpath = (new URL(document.URL)).pathname.split("/");
@@ -35,12 +35,11 @@ function tag_digest(t){
 function find_classes(div){
   let selected_class, unselected_class = null;
   for(c of div.children){
-    console.debug(c.className.indexOf("selected"),c.className)
     if(c.className.indexOf("selected")!=-1) selected_class = c.className;
     else unselected_class = c.className;
   }
-  console.assert(null !== selected_class, "tab selected classes not found")
-  console.assert(null !== unselected_class, "tab unselected classes not found")
+  console.assert(null !== selected_class, "dockertags: tab selected classes not found")
+  console.assert(null !== unselected_class, "dockertags: tab unselected classes not found")
   return [selected_class, unselected_class]
 }
 
@@ -80,6 +79,7 @@ function display_tags(tss, div){
 
 async function load_pretty_tags(event){
   select_tabs(event.target);
+  console.log("dockertags: requestings tags !")
   const p = official?"library/"+lpath[2]:lpath[2]+"/"+lpath[3];
   const o = await fetch("https://hub.docker.com/v2/repositories/"+p+"/tags/?page_size=100&page=1");
   const j = await o.json();
@@ -97,10 +97,10 @@ async function load_pretty_tags(event){
 }
 
 async function add_tab(div){
-  console.log("page loaded, editing...")
+  console.log("dockertags: page loaded, editing...")
   tabsdiv = div;
   let [_, unselected_classes] = find_classes(tabsdiv);
-    
+
   const link = document.createElement("a");
   link.href = "javascript:void(0)";
   link.textContent = "Useful Tags";
