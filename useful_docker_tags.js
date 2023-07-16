@@ -25,8 +25,7 @@ function tag_digest(t){
   if(t.digest !== undefined)
     return t.digest;
   for(let im of t.images){
-    console.assert(im.status === "active", "status is '${im.status}'")
-    if(im.architecture === FAVORITE_ARCH)
+    if(im.status === "active" && im.architecture === FAVORITE_ARCH)
       return im.architecture +"_"+ im.digest;
   }
   const im0 = t.images[0];
@@ -86,6 +85,7 @@ async function load_pretty_tags(event){
   const j = await o.json();
   const d={};
   for(t of j.results){
+    if(t.tag_status === "inactive") continue;
     t.digest = tag_digest(t);
     if(!(t.digest in d))
       d[t.digest]=[];
