@@ -65,7 +65,7 @@ jobs:
       - name: Publish Firefox
         uses: maoserr/firefox_extension_publish@v1.0.4
         with:
-          firefox_extension_id: epublifier@maoserr.com
+          firefox_extension_id: ZFhObFpuVnNYMlJ2WTJ0bGNsOTBZV2R6
           api_key: ${{ secrets.FIREFOX_API_KEY }}
           api_secret: ${{ secrets.FIREFOX_API_SECRET }}
           file: firefox.zip
