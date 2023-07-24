@@ -2,13 +2,21 @@ name: Build and Publish
 
 on:
   push:
-    branches: [ main, dev ]
-
-env:
-  MAJOR_VER: 1
-  MINOR_VER: 0
+    branches: [ main ]
 
 jobs:
+  set_version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.extract_version.outputs.VERSION }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Extract version
+        id: extract_version
+        run: |
+          VERSION=$(grep -m 1 '"version"' manifest.json | sed 's/[^0-9.]*//g')
+          echo "::set-output name=VERSION::$VERSION"
+          
   build_chrome:
     runs-on: ubuntu-latest
     steps:
@@ -72,7 +80,7 @@ jobs:
          #src_file: src.zip
 
   publish_release:
-    needs: [ build_firefox, build_chrome ]
+    needs: [ build_firefox, build_chrome, set_version ]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
@@ -81,7 +89,7 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: v${{ env.MAJOR_VER }}.${{ env.MINOR_VER }}.${{ github.run_number }}
+          tag_name: v${{ needs.set_version.outputs.version }}_${{ github.run_number }}
           files: |
             firefox/firefox.zip
             chrome/chrome.zip
