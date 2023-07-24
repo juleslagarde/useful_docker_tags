@@ -46,7 +46,7 @@ jobs:
       - name: Publish Chrome
         uses: maoserr/chrome_extension_publish@v1.0.3
         with:
-          chrome_extension_id: '{1d4f136b-eb8d-40ea-96d8-a932c5d4de83}'
+          chrome_extension_id: efbkeonpffhkgplinehopofbjhmacpea
           client_id: ${{ secrets.CHROME_CLIENT_ID }}
           refresh_token: ${{ secrets.CHROME_REFRESH_TOKEN }}
           client_secret: ${{ secrets.CHROME_CLIENT_SECRET }}
@@ -65,7 +65,7 @@ jobs:
       - name: Publish Firefox
         uses: maoserr/firefox_extension_publish@v1.0.4
         with:
-          firefox_extension_id: ZFhObFpuVnNYMlJ2WTJ0bGNsOTBZV2R6
+          firefox_extension_id: '{1d4f136b-eb8d-40ea-96d8-a932c5d4de83}'
           api_key: ${{ secrets.FIREFOX_API_KEY }}
           api_secret: ${{ secrets.FIREFOX_API_SECRET }}
           file: firefox.zip
