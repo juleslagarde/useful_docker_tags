@@ -46,7 +46,7 @@ jobs:
       - name: Publish Chrome
         uses: maoserr/chrome_extension_publish@v1.0.3
         with:
-          chrome_extension_id: efbkeonpffhkgplinehopofbjhmacpea
+          chrome_extension_id: '{1d4f136b-eb8d-40ea-96d8-a932c5d4de83}'
           client_id: ${{ secrets.CHROME_CLIENT_ID }}
           refresh_token: ${{ secrets.CHROME_REFRESH_TOKEN }}
           client_secret: ${{ secrets.CHROME_CLIENT_SECRET }}
