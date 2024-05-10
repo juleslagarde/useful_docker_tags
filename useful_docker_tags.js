@@ -5,8 +5,10 @@ const lpath = (new URL(document.URL)).pathname.split("/");
 const official = lpath[1]=="_"
 //const xpath_maindiv = official?"/html/body/div[1]/div/div[2]/div/div[3]":"/html/body/div[1]/div/div[2]/div/div/div[2]/div[2]"
 //const xpath_tabs = official?"/html/body/div[1]/div/div[2]/div/div[2]/div/div/div[2]/div/div":"/html/body/div[1]/div/div[2]/div/div/div[2]/div[1]/div[2]/div/div/div";
-const maindiv_selector = official?"div.MuiContainer-root:nth-child(3)":"#mainContainer > .MuiBox-root > .MuiBox-root > .MuiStack-root > .MuiContainer-root";
-const tabs_selector = ".MuiTabs-flexContainer"; 
+//const maindiv_selector = official?"div.MuiContainer-root:nth-child(3)":"#mainContainer > .MuiBox-root > .MuiBox-root > .MuiStack-root > .MuiContainer-root";
+const maindiv_selector = official?"div.MuiContainer-root:nth-child(3)":".css-1i43dhb > div:nth-child(2)";
+//const tabs_selector = ".MuiTabs-flexContainer"; 
+const tabs_selector = official?"div.MuiTabs-root:nth-child(2) > div:nth-child(1) > div:nth-child(1)":"div.MuiTabs-root:nth-child(1) > div:nth-child(1) > div:nth-child(1)";
 //const xpath_sidepanel= official?"/html/body/div[1]/div/div[2]/div/div[3]/div/div[2]":"/html/body/div[1]/div/div[2]/div/div/div[3]/div/div/div/div[2]";
 
 let tabsdiv = null;
@@ -14,6 +16,7 @@ let maindiv = null;
 
 // ============================ UTILS ====================================
 async function wait_and_load_selector(selector, timeout = 5000){
+  console.log("[usefull tags] waiting for '"+selector+"'")
   const endTime = Date.now() + timeout;
   let o = document.querySelector(selector);
   while(o === null && Date.now() <= endTime){
@@ -21,6 +24,7 @@ async function wait_and_load_selector(selector, timeout = 5000){
     o = document.querySelector(selector);
   }
   if(o === null) throw new Error(`dockertags: Timeout waiting for selector: '${selector}'`);
+  console.log("[usefull tags] found ! -> '"+selector+"'")
   return o;
 }
 
