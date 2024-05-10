@@ -52,13 +52,13 @@ jobs:
         with:
           name: chrome
       - name: Publish Chrome
-        uses: maoserr/chrome_extension_publish@v1.0.3
+        uses: wdzeng/chrome-extension@v1
         with:
-          chrome_extension_id: efbkeonpffhkgplinehopofbjhmacpea
-          client_id: ${{ secrets.CHROME_CLIENT_ID }}
-          refresh_token: ${{ secrets.CHROME_REFRESH_TOKEN }}
-          client_secret: ${{ secrets.CHROME_CLIENT_SECRET }}
-          file: chrome.zip
+          extension-id: efbkeonpffhkgplinehopofbjhmacpea
+          zip-path: chrome.zip
+          client-id: ${{ secrets.CHROME_CLIENT_ID }}
+          client-secret: ${{ secrets.CHROME_CLIENT_SECRET }}
+          refresh-token: ${{ secrets.CHROME_REFRESH_TOKEN }}
 
   publish_firefox:
     needs: build_firefox
